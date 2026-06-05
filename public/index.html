@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facet — The honest facial analysis</title>
+  <meta name="description" content="Upload your face. Get a clear, science-backed plan of real things you can do at home to look your best. No rating. No surgery. No subscription. Once.">
+  <meta property="og:title" content="Facet — The honest facial analysis">
+  <meta property="og:description" content="No rating out of ten. No surgery. No subscription trap. Just what works.">
+  <meta property="og:image" content="/assets/facet-gem.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/facet-gem.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ────────────────────────────────────────────────────────── */
+    :root {
+      --ink:        #1a1f1c;
+      --sage:       #6b7d6a;
+      --sage-deep:  #4a5949;
+      --clay:       #c97b5a;
+      --clay-deep:  #b5663f;
+      --clay-soft:  #e4a584;
+      --paper:      #f7f4ee;
+      --mist:       #eae5db;
+      --line:       #d8d2c6;
+      --cloud:      #fbfaf6;
+      --fg-2:       #3a423a;
+      --fg-3:       #555d54;
+      --fg-muted:   var(--sage);
+      --fg-invert:  var(--paper);
+      --fg-invert-2:#b8bdb5;
+      --fg-invert-3:#7d837b;
+      --status-strong-bg:  rgba(107,125,106,0.18);
+      --status-strong-fg:  var(--sage-deep);
+      --status-grow-bg:    rgba(201,123,90,0.18);
+      --status-grow-fg:    var(--clay-deep);
+      --status-strong-bg-d: rgba(107,125,106,0.30);
+      --status-strong-fg-d: #a8c4a6;
+      --status-grow-bg-d:   rgba(201,123,90,0.25);
+      --status-grow-fg-d:   var(--clay-soft);
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body:    'Inter Tight', -apple-system, sans-serif;
+      --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-2xl: 18px; --r-pill: 100px;
+      --shadow-float: 0 20px 60px rgba(26,31,28,0.07);
+      --shadow-cta: 0 6px 22px rgba(201,123,90,0.28);
+      --shadow-cta-hover: 0 10px 30px rgba(201,123,90,0.36);
+      --dur: 0.2s;
+    }
+
+    /* ── RESET ─────────────────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ─────────────────────────────────────────────────── */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0.025;
+      background-image: url('/assets/grain.svg');
+    }
+
+    /* ── LAYOUT ────────────────────────────────────────────────────────── */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+    section { padding: 90px 0; position: relative; z-index: 2; border-bottom: 1px solid var(--line); }
+    section:last-of-type { border-bottom: none; }
+
+    /* ── TYPE ──────────────────────────────────────────────────────────── */
+    .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--clay); margin-bottom: 18px;
+    }
+    .fct-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 46px);
+      font-weight: 300; letter-spacing: -1px; line-height: 1.08; margin-bottom: 24px;
+    }
+    .fct-h2 em { font-style: italic; color: var(--sage); }
+    .section-intro { font-size: 18px; color: var(--fg-2); max-width: 620px; margin-bottom: 10px; }
+    p { font-size: 16px; color: var(--fg-2); line-height: 1.7; }
+
+    /* ── BUTTONS ───────────────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-block;
+      font-family: var(--font-body); font-size: 16px; font-weight: 500; letter-spacing: 0.3px;
+      background: var(--clay); color: #fff;
+      padding: 16px 34px; border-radius: var(--r-pill);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all var(--dur); box-shadow: var(--shadow-cta);
+    }
+    .btn-primary:hover { background: var(--clay-deep); transform: translateY(-2px); box-shadow: var(--shadow-cta-hover); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── NAV ───────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,244,238,0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: 1000px; margin: 0 auto; padding: 18px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-family: var(--font-display); font-size: 22px; font-weight: 400;
+      letter-spacing: -0.5px; display: inline-flex; align-items: center; gap: 9px;
+      text-decoration: none; color: var(--ink);
+    }
+    .logo img { width: 22px; height: 22px; }
+    .logo .dot { color: var(--clay); }
+    .nav-cta {
+      font-family: var(--font-body); font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+      background: var(--ink); color: var(--paper);
+      padding: 10px 22px; border-radius: var(--r-pill);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background var(--dur);
+    }
+    .nav-cta:hover { background: var(--sage-deep); }
+
+    /* ── HERO ──────────────────────────────────────────────────────────── */
+    .hero { padding: 110px 0 90px; position: relative; z-index: 2; border-bottom: 1px solid var(--line); }
+    .hero-badge {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--clay-deep);
+      background: rgba(201,123,90,0.1); padding: 8px 16px;
+      border-radius: var(--r-pill); margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(46px, 8vw, 92px);
+      font-weight: 300; line-height: 0.96; letter-spacing: -2.5px;
+      margin-bottom: 32px; max-width: 900px;
+    }
+    .hero h1 em { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      font-size: 21px; font-weight: 300; color: var(--sage-deep);
+      max-width: 560px; margin-bottom: 44px; line-height: 1.5;
+    }
+    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .hero-note { font-size: 14px; color: var(--sage); }
+
+    /* Hero visual card */
+    .hero-visual {
+      margin-top: 70px;
+      background: var(--cloud); border: 1px solid var(--line);
+      border-radius: var(--r-xl); padding: 8px;
+      box-shadow: var(--shadow-float);
+    }
+    .hero-visual-inner {
+      background: var(--ink); border-radius: 11px; padding: 44px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    }
+    .hv-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--clay-soft); margin-bottom: 16px; }
+    .hv-left h3 { font-family: var(--font-display); color: var(--paper); font-size: 26px; font-weight: 400; line-height: 1.25; margin-bottom: 14px; }
+    .hv-left p { color: #b8bdb5; font-size: 14px; }
+    .hv-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--r-md); padding: 22px; }
+    .hv-metric { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .hv-metric:last-child { border-bottom: none; }
+    .hv-metric .m-name { color: #d8dad6; font-size: 14px; }
+    .m-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); }
+    .m-strong { background: var(--status-strong-bg-d); color: var(--status-strong-fg-d); }
+    .m-work   { background: var(--status-grow-bg-d);   color: var(--status-grow-fg-d); }
+
+    /* ── ANTI-COMPARE ──────────────────────────────────────────────────── */
+    .anti { background: var(--ink); }
+    .anti .eyebrow { color: var(--clay-soft); }
+    .anti .fct-h2  { color: var(--paper); }
+    .anti .section-intro { color: var(--fg-invert-2); max-width: 640px; margin-bottom: 44px; }
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; border-radius: var(--r-lg); overflow: hidden;
+      background: rgba(255,255,255,0.06);
+    }
+    .compare-col { padding: 40px 34px; }
+    .compare-col.them { background: #161916; }
+    .compare-col.us   { background: #1e2420; }
+    .compare-col h3 { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
+    .compare-col.them h3 { color: #7d837b; }
+    .compare-col.us   h3 { color: var(--clay-soft); }
+    .compare-item { display: flex; gap: 12px; padding: 13px 0; font-size: 15px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .compare-item:last-child { border-bottom: none; }
+    .compare-col.them .compare-item { color: #999e96; }
+    .compare-col.us   .compare-item { color: #e4e6e2; }
+    .c-icon { flex-shrink: 0; font-family: var(--font-display); }
+    .them .c-icon { color: var(--clay-deep); }
+    .us   .c-icon { color: #a8c4a6; }
+
+    /* ── HOW IT WORKS ──────────────────────────────────────────────────── */
+    .mech-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 50px; }
+    .mech-step { background: var(--cloud); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 32px 28px; }
+    .mech-num { font-family: var(--font-display); font-size: 13px; color: var(--clay); letter-spacing: 2px; margin-bottom: 16px; font-weight: 400; }
+    .mech-step h3 { font-family: var(--font-display); font-size: 21px; font-weight: 500; margin-bottom: 10px; }
+    .mech-step p { font-size: 14px; color: var(--fg-3); }
+
+    /* ── MODEL EXPLAINER ───────────────────────────────────────────────── */
+    .model-box { background: var(--mist); border-radius: var(--r-xl); padding: 56px 50px; margin-top: 40px; }
+    .model-box h3 { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 20px; }
+    .model-box p { font-size: 16px; color: var(--fg-2); max-width: 700px; margin-bottom: 18px; }
+    .model-box p:last-of-type { margin-bottom: 20px; }
+    .highlight { color: var(--clay-deep); font-weight: 500; }
+    .transparency-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; color: var(--sage-deep);
+      background: rgba(107,125,106,0.14); padding: 8px 16px; border-radius: var(--r-pill);
+    }
+
+    /* ── RESEARCH ──────────────────────────────────────────────────────── */
+    .research-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 40px; }
+    .research-card {
+      background: var(--cloud); border: 1px solid var(--line);
+      border-left: 3px solid var(--sage); border-radius: var(--r-md); padding: 24px 26px;
+    }
+    .research-card .finding { font-size: 15px; color: var(--ink); margin-bottom: 10px; font-weight: 400; line-height: 1.55; }
+    .research-card .cite { font-size: 12px; color: var(--sage); font-style: italic; }
+    .research-note { font-size: 14px; color: var(--sage); margin-top: 24px; text-align: center; }
+
+    /* ── PRICING ───────────────────────────────────────────────────────── */
+    .pricing { background: var(--cloud); }
+    .price-card {
+      max-width: 520px; margin: 44px auto 0;
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: var(--r-2xl); padding: 48px 44px; text-align: center;
+      box-shadow: var(--shadow-float);
+    }
+    .price-tier { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); margin-bottom: 16px; }
+    .price-amount { font-family: var(--font-display); font-size: 64px; font-weight: 300; letter-spacing: -2px; }
+    .price-amount .cents { font-size: 28px; vertical-align: super; }
+    .price-billing { font-size: 14px; color: var(--sage); margin-bottom: 10px; }
+    .price-once {
+      display: inline-block; font-size: 12px; font-weight: 600; color: var(--sage-deep);
+      background: rgba(107,125,106,0.14); padding: 6px 14px;
+      border-radius: var(--r-pill); margin-bottom: 28px;
+    }
+    .price-features { text-align: left; margin: 0 auto 32px; max-width: 360px; }
+    .price-feature { display: flex; gap: 12px; padding: 11px 0; font-size: 15px; color: var(--fg-2); border-bottom: 1px solid var(--mist); }
+    .price-feature:last-child { border-bottom: none; }
+    .pf-check { color: var(--sage); font-family: var(--font-display); flex-shrink: 0; }
+    .addons { max-width: 520px; margin: 24px auto 0; }
+    .addons-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); text-align: center; margin-bottom: 18px; }
+    .addon {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--paper); border: 1px solid var(--line);
+      border-radius: var(--r-md); padding: 18px 22px; margin-bottom: 12px;
+    }
+    .addon.recurring { border-color: var(--clay-soft); border-style: dashed; }
+    .addon-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .addon-info p { font-size: 13px; color: var(--sage); }
+    .addon-price { font-family: var(--font-display); font-size: 20px; color: var(--clay-deep); flex-shrink: 0; margin-left: 16px; }
+
+    /* ── WAITLIST ──────────────────────────────────────────────────────── */
+    .waitlist { background: var(--ink); }
+    .waitlist .eyebrow { color: var(--clay-soft); text-align: center; }
+    .waitlist .fct-h2 { color: var(--paper); text-align: center; }
+    .waitlist .section-intro { color: var(--fg-invert-2); margin: 0 auto 40px; text-align: center; }
+    .wl-form { max-width: 520px; margin: 0 auto; }
+
+    /* multi-field form */
+    .wl-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .wl-field { display: flex; flex-direction: column; gap: 6px; }
+    .wl-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--fg-invert-3); }
+    .wl-input, .wl-select {
+      padding: 14px 18px; border-radius: var(--r-pill);
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06); color: var(--paper);
+      font-family: var(--font-body); font-size: 15px; font-weight: 300;
+      appearance: none; width: 100%;
+    }
+    .wl-input::placeholder { color: var(--fg-invert-3); }
+    .wl-input:focus, .wl-select:focus { outline: none; border-color: var(--clay); }
+    .wl-input.error { border-color: var(--clay); }
+    .wl-select option { background: var(--ink); color: var(--paper); }
+    .wl-email-row { margin-bottom: 12px; }
+    .wl-submit-row { display: flex; gap: 12px; }
+    .wl-submit-row .wl-input { flex: 1; border-radius: var(--r-pill); }
+    .wl-submit {
+      background: var(--clay); color: #fff; border: none;
+      padding: 14px 28px; border-radius: var(--r-pill);
+      font-family: var(--font-body); font-size: 15px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; transition: background var(--dur);
+      flex-shrink: 0;
+    }
+    .wl-submit:hover { background: var(--clay-deep); }
+    .wl-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .wl-meta { text-align: center; font-size: 13px; color: var(--fg-invert-3); margin-top: 10px; }
+    .wl-success { text-align: center; color: var(--clay-soft); font-family: var(--font-display); font-size: 20px; padding: 24px; display: none; }
+    .wl-error-msg { text-align: center; color: var(--clay-soft); font-size: 13px; margin-top: 8px; display: none; }
+
+    .wl-spots { text-align: center; margin-top: 40px; }
+    .wl-spots .num { font-family: var(--font-display); font-size: 40px; font-weight: 300; color: var(--paper); line-height: 1; }
+    .wl-spots .lbl { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); margin-top: 6px; }
+
+    /* ── FAQ ───────────────────────────────────────────────────────────── */
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-q {
+      font-family: var(--font-display); font-size: 20px; font-weight: 500;
+      padding: 26px 0; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      user-select: none;
+    }
+    .faq-q:hover { color: var(--sage-deep); }
+    .chev { font-family: var(--font-body); font-size: 22px; font-weight: 300; color: var(--clay); transition: transform var(--dur); }
+    .faq-item.open .chev { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 15px; color: var(--fg-3); line-height: 1.7;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding-bottom 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 26px; }
+
+    /* ── FOOTER ────────────────────────────────────────────────────────── */
+    footer {
+      background: var(--ink); padding: 60px 0 40px;
+      position: relative; z-index: 2;
+    }
+    footer .logo { color: var(--paper); }
+    footer .logo .dot { color: var(--clay); }
+    footer .wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+    footer .tagline { font-size: 16px; color: var(--fg-invert-2); }
+    footer .disclaimer { font-size: 12px; color: var(--fg-invert-3); max-width: 680px; line-height: 1.6; }
+    footer .footer-links { display: flex; gap: 24px; }
+    footer .footer-links a { font-size: 13px; color: var(--fg-invert-3); text-decoration: none; transition: color var(--dur); }
+    footer .footer-links a:hover { color: var(--clay-soft); }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────────────── */
+    @media (max-width: 760px) {
+      .wrap { padding: 0 22px; }
+      .nav-inner { padding: 16px 22px; }
+      .hero { padding: 70px 0 60px; }
+      .hero-visual-inner { grid-template-columns: 1fr; gap: 28px; padding: 28px; }
+      .compare, .mech-grid, .research-grid { grid-template-columns: 1fr; }
+      .wl-fields { grid-template-columns: 1fr; }
+      .wl-submit-row { flex-direction: column; }
+      .model-box { padding: 36px 26px; }
+      .price-card { padding: 36px 26px; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <img src="/assets/facet-gem.svg" alt="Facet gem mark">
+      <span>Facet<span class="dot">.</span></span>
+    </a>
+    <button class="nav-cta" onclick="scrollToWaitlist()">Join the waitlist</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="hero-badge">Coming Fall 2026</span>
+    <h1>The honest mirror for <em>your</em> best-looking self.</h1>
+    <p class="hero-sub">Upload your face. Get a clear, science-backed plan of real things you can do at home, on a budget, to look your best. No rating out of ten. No surgery. No subscription trap. Once.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToWaitlist()">Get early access</button>
+      <span class="hero-note">First 500 get launch pricing.</span>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-inner">
+        <div class="hv-left">
+          <div class="hv-label">A glimpse of your report</div>
+          <h3>We score what you can change, never your worth.</h3>
+          <p>Each area comes with specific, at-home actions and the research behind them.</p>
+        </div>
+        <div class="hv-card">
+          <div class="hv-metric"><span class="m-name">Beard shape for your face</span><span class="m-status m-strong">Strong</span></div>
+          <div class="hv-metric"><span class="m-name">Hairstyle and face shape match</span><span class="m-status m-work">Room to grow</span></div>
+          <div class="hv-metric"><span class="m-name">Skin clarity and texture</span><span class="m-status m-work">Room to grow</span></div>
+          <div class="hv-metric"><span class="m-name">Brow definition</span><span class="m-status m-strong">Strong</span></div>
+          <div class="hv-metric"><span class="m-name">Body fat and facial definition</span><span class="m-status m-work">Room to grow</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ANTI-COMPARE -->
+<section class="anti">
+  <div class="wrap">
+    <div class="eyebrow">Why we exist</div>
+    <h2 class="fct-h2">The looksmaxxing industry is built on<br>making you feel bad.</h2>
+    <p class="section-intro">A number flashes on your screen: 5.8 out of ten. Then a list of fixes, and a weekly charge they hope you forget. We think that's backwards.</p>
+    <div class="compare">
+      <div class="compare-col them">
+        <h3>The other apps</h3>
+        <div class="compare-item"><span class="c-icon">✕</span> Rate you out of ten to make you anxious</div>
+        <div class="compare-item"><span class="c-icon">✕</span> Push surgery, fillers, bone procedures</div>
+        <div class="compare-item"><span class="c-icon">✕</span> $3.99 a week, auto-renewing forever</div>
+        <div class="compare-item"><span class="c-icon">✕</span> Or $250 for science that's free online</div>
+        <div class="compare-item"><span class="c-icon">✕</span> Imply a doctor reviewed you (they didn't)</div>
+      </div>
+      <div class="compare-col us">
+        <h3>Facet</h3>
+        <div class="compare-item"><span class="c-icon">✓</span> Scores only what you can actually change</div>
+        <div class="compare-item"><span class="c-icon">✓</span> Real at-home actions, on any budget</div>
+        <div class="compare-item"><span class="c-icon">✓</span> One time. No subscription. Ever.</div>
+        <div class="compare-item"><span class="c-icon">✓</span> A fraction of the price, every source linked</div>
+        <div class="compare-item"><span class="c-icon">✓</span> Honest about exactly how it works</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2 class="fct-h2">Three steps. <em>Total honesty</em> at every one.</h2>
+    <div class="mech-grid">
+      <div class="mech-step">
+        <div class="mech-num">STEP 01</div>
+        <h3>Upload</h3>
+        <p>A few well-lit photos from the angles we guide you through. No app download, no account spiral.</p>
+      </div>
+      <div class="mech-step">
+        <div class="mech-num">STEP 02</div>
+        <h3>We analyze</h3>
+        <p>Our model assesses your features against published research on what makes faces read as healthy, balanced, and well-presented.</p>
+      </div>
+      <div class="mech-step">
+        <div class="mech-num">STEP 03</div>
+        <h3>Your plan</h3>
+        <p>A clear report: where you're already strong, where there's room to grow, and specific at-home steps to get there, with the studies cited.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODEL EXPLAINER -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">What actually powers it</div>
+    <h2 class="fct-h2">Let's be honest about the mechanism.</h2>
+    <p class="section-intro">Most premium services imply a panel of doctors personally studied your face. The science they reference is published and free. We're not going to pretend otherwise.</p>
+    <div class="model-box">
+      <h3>Expert-trained software, not expert-reviewed photos.</h3>
+      <p>Facet is a comprehensive analysis model built and trained on a large library of peer-reviewed facial-aesthetics research. It cross-references your features against the findings in those studies and translates them into a plan specific to you.</p>
+      <p><span class="highlight">Here's the honest part:</span> you could do this yourself. The studies are public. What you're paying for is the reading, cross-referencing, and translation we did to turn that research into your personalized, actionable report, instantly, for the price of a nice dinner instead of a $250 consultation.</p>
+      <p>We cite everything. Every recommendation in your report links to the research behind it, so you can read the source yourself.</p>
+      <span class="transparency-tag">◆ Radical transparency is the product</span>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The science</div>
+    <h2 class="fct-h2">Grounded in real, published research.</h2>
+    <p class="section-intro">A sample of the peer-reviewed work the model is built on, all publicly available, all cited in your report.</p>
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="finding">Much of a face's appeal comes from looking healthy, meaning skin, grooming, and recovery genuinely move the needle.</div>
+        <div class="cite">Rhodes et al., "Perceived Health Contributes to the Attractiveness of Facial Symmetry, Averageness, and Sexual Dimorphism," Perception (2007)</div>
+      </div>
+      <div class="research-card">
+        <div class="finding">Across 11 world regions, more attractive faces are consistently read as more confident, trustworthy, and competent. The attractiveness halo effect is real and cross-cultural.</div>
+        <div class="cite">Batres &amp; Shiramizu, "Examining the attractiveness halo effect across cultures," Current Psychology (2022)</div>
+      </div>
+      <div class="research-card">
+        <div class="finding">Heavy stubble was rated most attractive overall. Facial hair length is a high-leverage, fully controllable variable.</div>
+        <div class="cite">Dixson &amp; Brooks, "The role of facial hair in women's perceptions of men's attractiveness," Evolution &amp; Human Behavior (2013)</div>
+      </div>
+      <div class="research-card">
+        <div class="finding">Averageness and a healthy appearance predict attractiveness more reliably than extreme masculinity or perfect symmetry. You don't need surgery, you need polish.</div>
+        <div class="cite">Lee et al., Scientific Reports (2025); Rhodes, Annual Review of Psychology (2006)</div>
+      </div>
+    </div>
+    <p class="research-note">The full model references 100+ sources at launch, and growing.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="wrap">
+    <div class="eyebrow" style="text-align:center">The offer</div>
+    <h2 class="fct-h2" style="text-align:center">One honest price.</h2>
+    <p class="section-intro" style="margin:0 auto;text-align:center">No subscription you forget about. No upsell to surgery. Pay once, own your plan.</p>
+    <div class="price-card">
+      <div class="price-tier">The Facet Report</div>
+      <div class="price-amount">$34<span class="cents">.99</span></div>
+      <div class="price-billing">launch price, one-time</div>
+      <div class="price-once">◆ First 500 only, then $49.99</div>
+      <div class="price-features">
+        <div class="price-feature"><span class="pf-check">✓</span> Full feature-by-feature analysis</div>
+        <div class="price-feature"><span class="pf-check">✓</span> Personalized at-home action plan</div>
+        <div class="price-feature"><span class="pf-check">✓</span> Beard, hair, skin and grooming guidance</div>
+        <div class="price-feature"><span class="pf-check">✓</span> Every recommendation cited to its research</div>
+        <div class="price-feature"><span class="pf-check">✓</span> Yours to keep, no recurring charge</div>
+      </div>
+      <button class="btn-primary" onclick="scrollToWaitlist()">Join the waitlist</button>
+    </div>
+    <div class="addons">
+      <div class="addons-label">Optional at checkout, never required</div>
+      <div class="addon recurring">
+        <div class="addon-info"><h4>Progress Re-Scan and Tracker</h4><p>Re-assess every 90 days, see what's improved, get an updated plan</p></div>
+        <div class="addon-price">$9/qtr</div>
+      </div>
+      <div class="addon">
+        <div class="addon-info"><h4>Seasonal Refresh</h4><p>An updated plan as your goals, hair, or routine change</p></div>
+        <div class="addon-price">+$19</div>
+      </div>
+      <div class="addon">
+        <div class="addon-info"><h4>Product and Routine Shortlist</h4><p>Budget-friendly product picks matched to your plan</p></div>
+        <div class="addon-price">+$15</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="wrap">
+    <div class="eyebrow">Early access</div>
+    <h2 class="fct-h2">Be first. Pay less.</h2>
+    <p class="section-intro">Join the waitlist for launch pricing and a heads-up the day Facet goes live, Fall 2026. No spam, just one email when it's ready.</p>
+    <div class="wl-form">
+      <div id="wl-fields-wrap">
+        <div class="wl-fields">
+          <div class="wl-field">
+            <label class="wl-label" for="wl-name">First name</label>
+            <input type="text" id="wl-name" class="wl-input" placeholder="Your name" autocomplete="given-name">
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-gender">I am</label>
+            <select id="wl-gender" class="wl-select">
+              <option value="">Select...</option>
+              <option value="man">A man</option>
+              <option value="woman">A woman</option>
+              <option value="other">Other</option>
+              <option value="prefer-not">Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+        <div class="wl-fields" style="margin-bottom:12px">
+          <div class="wl-field" style="grid-column:1/-1">
+            <label class="wl-label" for="wl-priority">What matters most to you?</label>
+            <select id="wl-priority" class="wl-select">
+              <option value="">Select...</option>
+              <option value="beard">Beard and facial hair</option>
+              <option value="hair">Hairstyle</option>
+              <option value="skin">Skin</option>
+              <option value="definition">Body fat and definition</option>
+              <option value="all">All of the above</option>
+            </select>
+          </div>
+        </div>
+        <div class="wl-submit-row">
+          <input type="email" id="wl-email" class="wl-input" placeholder="you@email.com" autocomplete="email">
+          <button class="wl-submit" id="wl-btn" onclick="submitWaitlist()">Join waitlist</button>
+        </div>
+        <p class="wl-meta">Must be 18+. We'll only email you about launch.</p>
+        <p class="wl-error-msg" id="wl-error">Please enter a valid email address.</p>
+      </div>
+      <div class="wl-success" id="wl-success">You're on the list. We'll be in touch. ◆</div>
+    </div>
+    <div class="wl-spots">
+      <div class="num">500</div>
+      <div class="lbl">launch-price spots, then it goes up</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Honest answers</div>
+    <h2 class="fct-h2">Questions, answered straight.</h2>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is this AI, or do real people review my photos?<span class="chev">+</span></div>
+      <div class="faq-a">It's software we built and trained on published facial-aesthetics research. No, a doctor isn't personally studying your photo, and we won't pretend one is. You're paying for the analysis the model performs against the research, instantly. Every recommendation is cited so you can verify it.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Will you give me a rating out of ten?<span class="chev">+</span></div>
+      <div class="faq-a">No. We think rating a person's face out of ten is exactly what makes these apps harmful. We assess specific, changeable areas, skin, grooming, hairstyle fit, definition, and tell you where there's room to grow. Never an overall verdict on you.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Will you ever recommend surgery?<span class="chev">+</span></div>
+      <div class="faq-a">Never. Every recommendation is something you can do at home, on a budget. Softmaxxing only, grooming, skin, hair, fitness, style. If you want surgical advice, that's a conversation for a licensed professional, not an app.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is it really one-time?<span class="chev">+</span></div>
+      <div class="faq-a">Yes. Charged once, plan is yours to keep. Optional extras exist if you want ongoing progress tracking, but nothing recurring is ever required or auto-enabled.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Does this work for women too?<span class="chev">+</span></div>
+      <div class="faq-a">Yes. The analysis covers skin, hair, facial structure, and grooming for both men and women. The research the model is trained on covers both sexes. Recommendations are tailored to your specific features, not a generic template.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <a href="#" class="logo">
+      <img src="/assets/facet-gem-light.svg" alt="Facet">
+      <span>Facet<span class="dot">.</span></span>
+    </a>
+    <p class="tagline">The honest facial analysis. Maximize what you have.</p>
+    <div class="footer-links">
+      <a href="mailto:reach.facet@gmail.com">Contact</a>
+      <a href="#waitlist">Join waitlist</a>
+      <a href="https://instagram.com/use.facet" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com/@use.facet" target="_blank" rel="noopener">TikTok</a>
+    </div>
+    <p class="disclaimer">Facet provides general grooming, style, and self-presentation guidance based on published research, for informational purposes only. It is not medical, psychological, or cosmetic-surgical advice, and does not diagnose or treat any condition. Intended for adults 18+. If you're struggling with how you feel about your appearance, please talk to a qualified professional.</p>
+  </div>
+</footer>
+
+<script>
+  // ── SCROLL TO WAITLIST ──────────────────────────────────────────────
+  function scrollToWaitlist() {
+    document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => document.getElementById('wl-email').focus(), 600);
+  }
+
+  // ── FAQ ACCORDION ───────────────────────────────────────────────────
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  // ── WAITLIST FORM ───────────────────────────────────────────────────
+  async function submitWaitlist() {
+    const email    = document.getElementById('wl-email').value.trim();
+    const name     = document.getElementById('wl-name').value.trim();
+    const gender   = document.getElementById('wl-gender').value;
+    const priority = document.getElementById('wl-priority').value;
+    const btn      = document.getElementById('wl-btn');
+    const errEl    = document.getElementById('wl-error');
+
+    // basic validation
+    if (!email || !email.includes('@')) {
+      document.getElementById('wl-email').classList.add('error');
+      errEl.style.display = 'block';
+      return;
+    }
+
+    document.getElementById('wl-email').classList.remove('error');
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Joining...';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName: name, gender, priority }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('wl-fields-wrap').style.display = 'none';
+        document.getElementById('wl-success').style.display = 'block';
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Join waitlist';
+      errEl.textContent = 'Something went wrong. Try again or email reach.facet@gmail.com';
+      errEl.style.display = 'block';
+      console.error(err);
+    }
+  }
+
+  // allow Enter key in email field
+  document.getElementById('wl-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitWaitlist();
+  });
+</script>
+
+</body>
+</html>

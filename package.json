@@ -1,0 +1,9 @@
+{
+  "name": "facet-site",
+  "version": "1.0.0",
+  "description": "Facet — The honest facial analysis",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
