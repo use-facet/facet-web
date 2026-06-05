@@ -6,7 +6,7 @@
 //   MAILCHIMP_SERVER    — the datacenter prefix from your API key (e.g. "us21")
 //   MAILCHIMP_LIST_ID   — your audience/list ID (found in Audience > Settings > Audience name and defaults)
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS — allow the site to call this from any origin during dev
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
