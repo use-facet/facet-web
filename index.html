@@ -571,8 +571,8 @@
       <div class="wl-success" id="wl-success">You're on the list. We'll be in touch. ◆</div>
     </div>
     <div class="wl-spots">
-      <div class="num">500</div>
-      <div class="lbl">launch-price spots, then it goes up</div>
+      <div class="num" id="wl-spots-num">—</div>
+      <div class="lbl">launch-price spots remaining, then it goes up</div>
     </div>
   </div>
 </section>
@@ -624,6 +624,20 @@
 </footer>
 
 <script>
+  // ── SPOTS COUNTER ───────────────────────────────────────────────────
+  async function loadSpots() {
+    try {
+      const res = await fetch('/api/spots');
+      const data = await res.json();
+      if (typeof data.spots === 'number') {
+        document.getElementById('wl-spots-num').textContent = data.spots;
+      }
+    } catch (e) {
+      document.getElementById('wl-spots-num').textContent = '';
+    }
+  }
+  loadSpots();
+
   // ── SCROLL TO WAITLIST ──────────────────────────────────────────────
   function scrollToWaitlist() {
     document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
@@ -669,6 +683,7 @@
       if (data.success) {
         document.getElementById('wl-fields-wrap').style.display = 'none';
         document.getElementById('wl-success').style.display = 'block';
+        loadSpots();
       } else {
         throw new Error(data.error || 'Unknown error');
       }

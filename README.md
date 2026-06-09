@@ -12,10 +12,12 @@ Live in ~20 minutes. Follow these steps in order.
 3. Get your **Audience ID**:
    - Audience > Manage Audience > Settings > Audience name and defaults
    - Copy the "Audience ID" string (looks like `a1b2c3d4e5`)
+
 4. Get your **API Key**:
    - Account > Profile > Extras > API keys > Create A Key
    - Copy the full key — it ends with a datacenter prefix like `-us21`
    - The part after the dash is your **server prefix** (e.g. `us21`)
+   
 5. Add a custom merge field for gender and priority (optional but useful):
    - Audience > Manage Audience > Settings > Audience fields and *|MERGE|* tags
    - Add field: Tag `GENDER`, Label "Gender", Type "Text"
